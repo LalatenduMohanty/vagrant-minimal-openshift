@@ -2,6 +2,10 @@
 # vi: set ft=ruby :
 VAGRANTFILE_API_VERSION = "2"
 
+unless Vagrant.has_plugin?("landrush")
+    raise 'landrush is not installed!'
+end
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config landrush.enabled = true
   config.landrush.tld = "example.com"
