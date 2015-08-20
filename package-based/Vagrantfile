@@ -35,7 +35,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      echo "- system:serviceaccount:default:router" >> /tmp/privileged.tmp
      oc replace scc privileged -f /tmp/privileged.tmp
      CA=/etc/openshift/master
-     oadm create-server-cert --signer-cert=$CA/ca.crt --signer-key=$CA/ca.key --signer-serial=$CA/ca.serial.txt --hostnames='*.cloudapps.example.com' --cert=cloudapps.crt --key=cloudapps.key
+     oadm ca create-server-cert --signer-cert=$CA/ca.crt --signer-key=$CA/ca.key --signer-serial=$CA/ca.serial.txt --hostnames='*.cloudapps.example.com' --cert=cloudapps.crt --key=cloudapps.key
      cat cloudapps.crt cloudapps.key $CA/ca.crt > cloudapps.router.pem
      oadm router --default-cert=cloudapps.router.pem --credentials=/etc/openshift/master/openshift-registry.kubeconfig --service-account=router
   SHELL
