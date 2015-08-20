@@ -11,7 +11,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.landrush.tld = "example.com"
 
   config.vm.box = "centos/7"
-  config.vm.hostname = "openshift"
+  config.vm.hostname = "openshift.example.com"
 
   config.vm.provider "virtualbox" do |vbox, override|
     vbox.cpus = 2
