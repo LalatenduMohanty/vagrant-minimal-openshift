@@ -17,8 +17,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.provision "shell", inline: <<-SHELL
-     #sudo yum -y update
+     sudo yum -y update
      sudo cp sync/*.repo /etc/yum.repos.d/
-     sudo yum -y install docker openshift
+     sudo yum -y install docker openshift-node openshift-master
+     sudo systemctl enable docker openshift-master openshift-node
+     sudo systemctl start openshift-master openshift-node
   SHELL
 end
