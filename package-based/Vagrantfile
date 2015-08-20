@@ -27,8 +27,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      sudo systemctl start openshift-master openshift-node
      sudo mkdir /root/.kube /home/vagrant/.kube
      sudo cp /etc/openshift/master/admin.kubeconfig /home/vagrant/.kube/config
-     sudo cp /etc/openshift/master/admin.kubeconfig root/.kube/config
-     sudo chown -r vagrant:vagrant ~vagrant/.kube
+     sudo cp /etc/openshift/master/admin.kubeconfig /root/.kube/config
+     sudo chown -R vagrant:vagrant /home/vagrant/.kube
      sudo oadm registry --credentials=/etc/openshift/master/openshift-registry.kubeconfig
      echo '{"kind":"ServiceAccount","apiVersion":"v1","metadata":{"name":"router"}}' | oc create -f -
      oc get scc privileged -o yaml > /tmp/privileged.tmp
