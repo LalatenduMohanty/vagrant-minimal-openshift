@@ -23,7 +23,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      sudo openshift start --write-config=/etc/openshift --hostname=openshift.example.com
      sudo sed -i 's/master.yaml/master-config.yaml/' /etc/sysconfig/openshift-master
      sudo mkdir /etc/openshift/node
-     sudo mv /etc/openshift/node-localhost.localdomain/* /etc/openshift/node/
+     sudo mv /etc/openshift/node-openshift.example.com/* /etc/openshift/node/
+     sudo rmdir  /etc/openshift/node-openshift.example.com
      sudo systemctl enable docker openshift-master openshift-node
      sudo systemctl start openshift-master openshift-node
      sudo mkdir /root/.kube /home/vagrant/.kube
