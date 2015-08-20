@@ -21,6 +21,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      sudo yum -y update
      sudo cp sync/*.repo /etc/yum.repos.d/
      sudo yum -y install docker openshift-node openshift-master
+     sudo systemctl mask docker-storage-setup
      sudo openshift start --write-config=/etc/openshift --hostname=openshift.example.com
      sudo sed -i 's/master.yaml/master-config.yaml/' /etc/sysconfig/openshift-master
      sudo mv /etc/openshift/node-openshift.example.com/* /etc/openshift/node/
