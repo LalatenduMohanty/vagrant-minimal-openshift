@@ -7,7 +7,7 @@ unless Vagrant.has_plugin?("landrush")
 end
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config landrush.enabled = true
+  config.landrush.enabled = true
   config.landrush.tld = "example.com"
 
   config.vm.box = "centos/7"
