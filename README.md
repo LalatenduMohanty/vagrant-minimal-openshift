@@ -1,0 +1,1 @@
+# vagrant-minimal-openshift
