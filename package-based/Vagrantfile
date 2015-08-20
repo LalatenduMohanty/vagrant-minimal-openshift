@@ -20,10 +20,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      sudo yum -y update
      sudo cp sync/*.repo /etc/yum.repos.d/
      sudo yum -y install docker openshift-node openshift-master
-     sudo openshift start master --write-config=/etc/openshift/master
-     sudo oadm --config=/etc/openshift/master/admin.kubeconfig create-node-config --node-dir=/etc/openshift/node --node=localhost.localdomain --hostnames=localhost.localdomain --certificate-authority=/etc/openshift/master/ca.crt
+     sudo openshift start --write-config=/etc/openshift/master
      sudo sed -i 's/master.yaml/master-config.yaml/' /etc/sysconfig/openshift-master
+     sudo mv /etc/openshift/node.node-localhost.localdomain /etc/openshift/node
      sudo systemctl enable docker openshift-master openshift-node
      sudo systemctl start openshift-master openshift-node
+     sudo mkdir /root/.kube /home/vagrant/.kube
+     sudo cp /etc/openshift/master/admin.kubeconfig /home/vagrant/.kube/config
+     sudo cp /etc/openshift/master/admin.kubeconfig root/.kube/config
+     sudo chown -r vagrant:vagrant ~vagrant/.kube
+     sudo oadm registry --credentials=/etc/openshift/master/openshift-registry.kubeconfig
+     echo '{"kind":"ServiceAccount","apiVersion":"v1","metadata":{"name":"router"}}' | oc create -f -
+     oc get scc privileged -o yaml > /tmp/privileged.tmp
+     echo "- system:serviceaccount:default:router" >> /tmp/privileged.tmp
+     oc replace scc privileged -f /tmp/privileged.tmp
+     CA=/etc/openshift/master
+     oadm create-server-cert --signer-cert=$CA/ca.crt --signer-key=$CA/ca.key --signer-serial=$CA/ca.serial.txt --hostnames='*.cloudapps.example.com' --cert=cloudapps.crt --key=cloudapps.key
+     cat cloudapps.crt cloudapps.key $CA/ca.crt > cloudapps.router.pem
+     oadm router --default-cert=cloudapps.router.pem --credentials=/etc/openshift/master/openshift-registry.kubeconfig --service-account=router
   SHELL
 end
